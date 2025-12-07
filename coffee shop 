@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sunrise Coffee — Local Shop</title>
+  <style>
+    :root{--bg:#f7f6f3;--card:#ffffff;--accent:#6b4f4f;--muted:#6d6d6d}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;background:var(--bg);color:#222}
+    header{background:linear-gradient(90deg,#7b5a5a, #b68b8b);color:#fff;padding:18px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;border-radius:8px;background:#fff3;padding:6px;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
+    .nav{display:flex;gap:12px;align-items:center}
+    .btn{background:rgba(255,255,255,0.12);border:0;padding:8px 12px;border-radius:8px;color:#fff;cursor:pointer}
+    main{padding:28px 20px;max-width:1100px;margin:0 auto}
+    .hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+    .hero-text h1{margin:0;font-size:28px}
+    .hero-text p{margin:8px 0 0;color:var(--muted)}
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(30,30,30,0.06);display:flex;flex-direction:column;gap:10px}
+    .thumb{height:140px;border-radius:10px;object-fit:cover;width:100%}
+    .title{font-weight:600}
+    .price{font-weight:700;color:var(--accent)}
+    .card-footer{margin-top:auto;display:flex;gap:8px}
+    .small{font-size:13px;color:var(--muted)}
+    footer{padding:20px;text-align:center;color:var(--muted)}
+    /* simple responsive */
+    @media(min-width:900px){.hero-text h1{font-size:36px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">SC</div>
+      <div>
+        <div style="font-weight:700">Sunrise Coffee</div>
+        <div style="font-size:12px;opacity:0.9">Local coffee shop • Fresh beans</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="btn" onclick="openCart()">Cart (<span id="cart-count">0</span>)</button>
+      <button class="btn" onclick="location.href='#contact'">Contact</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Warm, fresh coffee — made for you</h1>
+        <p class="small">Choose single origin beans, espresso shots, or cozy blends. Order online or pick up in-store.</p>
+      </div>
+      <div style="margin-left:auto;min-width:180px">
+        <input id="search" placeholder="Search coffees..." style="width:100%;padding:10px;border-radius:10px;border:1px solid #e3e3e3" oninput="renderProducts()" />
+      </div>
+    </section>
+
+    <section>
+      <h2 style="margin:6px 0 12px">Our Menu</h2>
+      <div class="products-grid" id="products"></div>
+    </section>
+
+    <section id="contact" style="margin-top:24px;">
+      <h3>Contact & Pickup</h3>
+      <p class="small">Address: Balkumari, Lalitpur • Open: 6:00 AM – 11:00 PM</p>
+      <p class="small">Phone: 9811889198 • Email: hello@sunrisecoffee.example</p>
+    </section>
+  </main>
+
+  <footer>
+    Built with ☕ • Sunrise Coffee — Simple demo shop
+  </footer>
+
+  <template id="card-template">
+    <article class="card">
+      <img class="thumb" src="" alt="">
+      <div>
+        <div class="title"></div>
+        <div class="small desc"></div>
+        <div class="price"></div>
+      </div>
+      <div class="card-footer">
+        <button class="btn add">Add</button>
+        <div style="margin-left:auto" class="small"> <span class="muted"></span></div>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    const products = [
+      {id:1,name:'Espresso',desc:'Rich single shot',price:120,img:'https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=800&q=60'},
+      {id:2,name:'Cappuccino',desc:'Foamy milk & espresso',price:150,img:'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=800&q=60'},
+      {id:3,name:'Latte',desc:'Smooth steamed milk',price:160,img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=60'},
+      {id:4,name:'Americano',desc:'Hot water & espresso',price:110,img:'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=60'},
+      {id:5,name:'Mocha',desc:'Chocolate + espresso',price:180,img:'https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?auto=format&fit=crop&w=800&q=60'},
+      {id:6,name:'Cold Brew',desc:'Slow-steeped cold coffee',price:170,img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=60'}
+    ];
+
+    const cart = JSON.parse(localStorage.getItem('cart')||'{}');
+    function updateCartCount(){
+      const count = Object.values(cart).reduce((s,q)=>s+q,0);
+      document.getElementById('cart-count').innerText = count;
+    }
+
+    function renderProducts(){
+      const q = (document.getElementById('search').value||'').toLowerCase();
+      const container = document.getElementById('products');
+      container.innerHTML='';
+      const tpl = document.getElementById('card-template');
+      products.filter(p=>p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)).forEach(p=>{
+        const node = tpl.content.cloneNode(true);
+        node.querySelector('.thumb').src = p.img;
+        node.querySelector('.thumb').alt = p.name;
+        node.querySelector('.title').innerText = p.name;
+        node.querySelector('.desc').innerText = p.desc;
+        node.querySelector('.price').innerText = 'Rs ' + p.price;
+        node.querySelector('.add').addEventListener('click',()=>{
+          addToCart(p.id);
+        });
+        container.appendChild(node);
+      });
+    }
+
+    function addToCart(id){
+      cart[id] = (cart[id]||0) + 1;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      alert('Added to cart');
+    }
+
+    function openCart(){
+      const lines = [];
+      let total = 0;
+      for(const id in cart){
+        const p = products.find(x=>x.id==id);
+        if(!p) continue;
+        const qty = cart[id];
+        lines.push(`${p.name} x ${qty} — Rs ${p.price*qty}`);
+        total += p.price*qty;
+      }
+      if(lines.length===0){
+        alert('Cart is empty');
+        return;
+      }
+      const text = lines.join('\n') + '\n\nTotal: Rs ' + total + '\n\n(Checkout at the shop)';
+      alert(text);
+    }
+
+    // initial render
+    renderProducts();
+    updateCartCount();
+  </script>
+</body>
+</html>
