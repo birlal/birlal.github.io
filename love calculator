@@ -1,91 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Love Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #ff758c, #ff7eb3);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  <meta charset="UTF-8">
+  <title>Love Calculator ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .container {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            width: 320px;
-            text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #ff4d6d, #ff8fa3);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        h1 {
-            color: #ff4d6d;
-        }
+    .box {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 12px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
 
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
+    h1 {
+      color: #ff4d6d;
+      margin-bottom: 15px;
+    }
 
-        button {
-            background: #ff4d6d;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
 
-        button:hover {
-            background: #e63950;
-        }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
 
-        #result {
-            margin-top: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
-    </style>
+    button:hover {
+      background: #e63950;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>❤️ Love Calculator ❤️</h1>
+  <div class="box">
+    <h1>❤️ Love Calculator ❤️</h1>
 
-        <input type="text" id="name1" placeholder="Your Name">
-        <input type="text" id="name2" placeholder="Partner Name">
+    <input type="text" id="name1" placeholder="Your Name">
+    <input type="text" id="name2" placeholder="Partner Name">
 
-        <button onclick="calculateLove()">Calculate</button>
+    <button onclick="calculateLove()">Calculate Love</button>
 
-        <div id="result"></div>
-    </div>
+    <div id="result"></div>
+  </div>
 
-    <script>
-        function calculateLove() {
-            var name1 = document.getElementById("name1").value;
-            var name2 = document.getElementById("name2").value;
+  <script>
+    function calculateLove() {
+      const name1 = document.getElementById("name1").value.trim();
+      const name2 = document.getElementById("name2").value.trim();
 
-            if (name1 === "" || name2 === "") {
-                document.getElementById("result").innerHTML =
-                    "❌ Please enter both names!";
-                return;
-            }
+      if (name1 === "" || name2 === "") {
+        document.getElementById("result").innerHTML =
+          "❌ Please enter both names";
+        return;
+      }
 
-            var loveScore = Math.floor(Math.random() * 100) + 1;
+      // Simple love formula
+      let loveScore = Math.floor(Math.random() * 41) + 60; // 60–100%
 
-            document.getElementById("result").innerHTML =
-                "❤️ Love Percentage: <br>" + loveScore + "%";
-        }
-    </script>
+      document.getElementById("result").innerHTML =
+        `❤️ Love Percentage<br>${loveScore}%`;
+    }
+  </script>
 
 </body>
 </html>
