@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Birla General Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Birla General Store</h1>
+        <p>Pulchowk, Lalitpur, Nepal</p>
+
+        <div class="form-section">
+            <input type="text" id="itemName" placeholder="Item Name">
+            <input type="number" id="itemPrice" placeholder="Price">
+            <input type="number" id="itemQty" placeholder="Quantity">
+            <button onclick="addItem()">Add Item</button>
+        </div>
+
+        <table id="billTable">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="summary">
+            <p>Sub Total: Rs <span id="subTotal">0</span></p>
+            <p>GST (13%): Rs <span id="gst">0</span></p>
+            <p><b>Grand Total: Rs <span id="grandTotal">0</span></b></p>
+        </div>
+
+        <button class="clear-btn" onclick="clearBill()">Clear Bill</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
