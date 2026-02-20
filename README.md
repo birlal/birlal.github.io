@@ -1,1 +1,0 @@
-# birlal.github.io
